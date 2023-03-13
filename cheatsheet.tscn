@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=3 uid="uid://duex2vnh5e3vy"]
+
+[ext_resource type="Theme" uid="uid://x0hag2x48702" path="res://theme.tres" id="1_5msoj"]
+[ext_resource type="Script" path="res://cheatsheet.gd" id="1_cw6md"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_vuk8y"]
+device = -1
+pressed = true
+keycode = 96
+unicode = 96
+
+[sub_resource type="Shortcut" id="Shortcut_r4cq6"]
+events = [SubResource("InputEventKey_vuk8y")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_ejuaj"]
+action = &"ui_cancel"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_edvs5"]
+events = [SubResource("InputEventAction_ejuaj")]
+
+[node name="CheatSheet" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_5msoj")
+script = ExtResource("1_cw6md")
+toggle_shortcut = SubResource("Shortcut_r4cq6")
+close_shortcut = SubResource("Shortcut_edvs5")
+
+[node name="QuakeConsole" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 35.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="QuakeConsole"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="CenterContainer" type="VBoxContainer" parent="QuakeConsole/MarginContainer"]
+layout_mode = 2
+
+[node name="ConsoleText" type="RichTextLabel" parent="QuakeConsole/MarginContainer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "> Cheatsheet Quake Console
+> Type '[color=badeff]help[/color]' to list available commands"
+scroll_following = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="QuakeConsole/MarginContainer/CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="QuakeConsole/MarginContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+text = " > "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CommandInput" type="LineEdit" parent="QuakeConsole/MarginContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Run a command..."
+clear_button_enabled = true
+middle_mouse_paste_enabled = false
+select_all_on_focus = true
+caret_blink = true
+
+[node name="RunButton" type="Button" parent="QuakeConsole/MarginContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Run"
+
+[connection signal="text_submitted" from="QuakeConsole/MarginContainer/CenterContainer/HBoxContainer/CommandInput" to="." method="_on_command_input_text_submitted"]
+[connection signal="pressed" from="QuakeConsole/MarginContainer/CenterContainer/HBoxContainer/RunButton" to="." method="_on_run_button_pressed"]
