@@ -57,10 +57,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+focus_mode = 2
 bbcode_enabled = true
-text = "> Cheatsheet Quake Console
-> Type '[color=badeff]help[/color]' to list available commands"
+text = "Cheatsheet Console
+
+[color=cdcfd280]Type '[color=abc9ff]help[/color]' to list available commands[/color]
+"
 scroll_following = true
+selection_enabled = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="QuakeConsole/MarginContainer/CenterContainer"]
 layout_mode = 2
@@ -68,7 +72,8 @@ alignment = 1
 
 [node name="Label" type="Label" parent="QuakeConsole/MarginContainer/CenterContainer/HBoxContainer"]
 layout_mode = 2
-text = " > "
+theme_override_colors/font_color = Color(0.670588, 0.788235, 1, 1)
+text = " $ "
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -76,7 +81,7 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Run a command..."
+placeholder_text = "Line Edit"
 clear_button_enabled = true
 middle_mouse_paste_enabled = false
 select_all_on_focus = true
@@ -85,7 +90,8 @@ caret_blink = true
 [node name="RunButton" type="Button" parent="QuakeConsole/MarginContainer/CenterContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Run"
+text = " Run "
 
+[connection signal="text_changed" from="QuakeConsole/MarginContainer/CenterContainer/HBoxContainer/CommandInput" to="." method="_on_command_input_text_changed"]
 [connection signal="text_submitted" from="QuakeConsole/MarginContainer/CenterContainer/HBoxContainer/CommandInput" to="." method="_on_command_input_text_submitted"]
 [connection signal="pressed" from="QuakeConsole/MarginContainer/CenterContainer/HBoxContainer/RunButton" to="." method="_on_run_button_pressed"]

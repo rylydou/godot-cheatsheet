@@ -1,25 +1,26 @@
 class_name CommandDB extends RefCounted
 
+signal unknown_command(name: String)
+
 var commands: Dictionary
 
-func register(root: String, command: Callable) -> void:
-	if commands.has(root):
-		commands[root].append(command)
+func register(name: String, command: Callable) -> void:
+	if commands.has(name):
+		commands[name].append(command)
 	else:
-		commands[root] = [command]
+		commands[name] = [command]
 
 func run(str: String) -> void:
-	var root := str.substr(0, str.find(' '))
-	print_debug('root:', root)
-	if not commands.has(root): return
+	var name := str.substr(0, str.find(' '))
+	if not commands.has(name):
+		unknown_command.emit(name)
+		return
 	
-	var root_commands = commands[root]
-	var args := get_args(str.substr(root.length() + 1))
-	print_debug('args:', args)
+	var root_commands = commands[name]
+	var args := get_args(str.substr(name.length() + 1))
+	#print('args:', args)
 	
 	var command: Callable = root_commands[0]
-	print_debug('method: ', command.get_method())
-	print_debug('object: ', command.get_object())
 	
 	command.callv(args)
 
@@ -29,6 +30,7 @@ func get_args(str: String) -> PackedStringArray:
 	var word: PackedStringArray
 	var submit: Callable = func () -> void:
 		var s := ''.join(word)
+		word.clear()
 		if s.length() == 0: return
 		args.append(s)
 	
@@ -39,11 +41,11 @@ func get_args(str: String) -> PackedStringArray:
 		if is_str:
 			if is_escape:
 				is_escape = false
-				word.append(ch)
 				match ch:
 					'n': word.append('\n')
 					't': word.append('\t')
 					'b': word.append('\b')
+					var c: word.append(c)
 				continue
 			
 			if ch == '\\':

@@ -4,7 +4,7 @@ class_name Cheatsheet extends Control
 @export var close_shortcut: Shortcut
 
 @onready var quake_console: Control = %QuakeConsole
-@onready var console_text: RichTextLabel = %ConsoleText
+@onready var console: RichTextLabel = %ConsoleText
 @onready var command_input: LineEdit = %CommandInput
 @onready var run_button: Button = %RunButton
 
@@ -15,9 +15,20 @@ func _ready() -> void:
 	quake_console.hide()
 	quake_console.position.y = -quake_console.size.y
 	
+	console.clear()
+	println("Cheatsheet: Console")
+	println("Type '[color=abc9ff]help[/color]' to list available commands")
+	
+	db.unknown_command.connect(
+		func(name):
+			println("[color=ff7085]unknown command '%s'[/color]" % name)
+	)
+	
+	db.register('help', help)
 	db.register('clear', clear)
-	db.register('ping', func(): println('pong'))
 	db.register('echo', func(str: String): println(str))
+	db.register('quit', get_tree().quit)
+	db.register('reload', get_tree().reload_current_scene)
 
 func _shortcut_input(event: InputEvent) -> void:
 	if close_shortcut.matches_event(event) and event.is_pressed():
@@ -63,25 +74,37 @@ func close() -> void:
 	slide_tween.tween_callback(quake_console.hide)
 
 func println(bbcode: String) -> void:
-	console_text.append_text(bbcode)
-	console_text.add_text('\n')
+	console.append_text(bbcode)
+	console.add_text('\n')
 
 func putln(text: String) -> void:
-	console_text.add_text(text)
-	console_text.add_text('\n')
+	console.add_text(text)
+	console.add_text('\n')
+
+func help() -> void:
+	var index := 1
+	for name in db.commands:
+		println(str(index) + '. ' + name)
+		index += 1
 
 func clear() -> void:
-	console_text.clear()
+	console.clear()
 
 func run() -> void:
 	var str := command_input.text
 	if str.length() == 0: return
 	command_input.clear()
-	putln(str)
 	
+	console.append_text('[color=42ffc2]$[/color] ')
+	console.add_text(str)
+	console.add_text('\n')
 	db.run(str)
 
 func _on_run_button_pressed() -> void:
 	run()
 func _on_command_input_text_submitted(new_text: String) -> void:
 	run()
+
+
+func _on_command_input_text_changed(new_text: String) -> void:
+	run_button.disabled = new_text.length() == 0

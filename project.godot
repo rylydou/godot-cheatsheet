@@ -14,8 +14,3 @@ config/name="CheatSheet"
 run/main_scene="res://cheatsheet.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.svg"
-
-[display]
-
-window/size/viewport_width=1280
-window/size/viewport_height=720
