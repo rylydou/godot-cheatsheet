@@ -1,7 +1,0 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://x0hag2x48702"]
-
-[ext_resource type="FontFile" uid="uid://cf0hb73rdh8ou" path="res://fonts/iosevka-custom-semibold.ttf" id="1_o2qxq"]
-
-[resource]
-default_font = ExtResource("1_o2qxq")
-default_font_size = 14

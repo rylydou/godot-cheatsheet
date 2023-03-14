@@ -1,14 +1,20 @@
-class_name CommandDB extends RefCounted
+extends RefCounted
+
+const Command := preload('res://addons/cheatsheet/scripts/command.gd')
 
 signal unknown_command(name: String)
 
 var commands: Dictionary
 
-func register(name: String, command: Callable) -> void:
+func register(name: String, callback: Callable) -> Command:
+	var command := Command.new(name, callback)
+	
 	if commands.has(name):
 		commands[name].append(command)
 	else:
 		commands[name] = [command]
+	
+	return command
 
 func run(str: String) -> void:
 	var name := str.substr(0, str.find(' '))

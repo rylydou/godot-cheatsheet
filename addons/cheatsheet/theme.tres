@@ -1,0 +1,16 @@
+[gd_resource type="Theme" load_steps=2 format=3]
+
+[ext_resource type="FontFile" uid="uid://cf0hb73rdh8ou" path="res://addons/cheatsheet/fonts/iosevka-custom-semibold.ttf" id="1_o2qxq"]
+
+[resource]
+default_font = ExtResource("1_o2qxq")
+default_font_size = 14
+FlowContainer/constants/h_separation = 4
+FlowContainer/constants/v_separation = 4
+HBoxContainer/constants/separation = 4
+MarginContainer/constants/margin_bottom = 8
+MarginContainer/constants/margin_left = 8
+MarginContainer/constants/margin_right = 8
+MarginContainer/constants/margin_top = 8
+TabContainer/constants/side_margin = 0
+VBoxContainer/constants/separation = 4

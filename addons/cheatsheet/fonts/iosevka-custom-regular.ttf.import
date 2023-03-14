@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cpdyk86ustnxr"
-path="res://.godot/imported/iosevka-custom-medium.ttf-883cc1a5550c0c538b95d9a9a286f05e.fontdata"
+uid="uid://m2op3qilv58o"
+path="res://.godot/imported/iosevka-custom-regular.ttf-39a6d6de32a68e1f91398d4d12703938.fontdata"
 
 [deps]
 
-source_file="res://fonts/iosevka-custom-medium.ttf"
-dest_files=["res://.godot/imported/iosevka-custom-medium.ttf-883cc1a5550c0c538b95d9a9a286f05e.fontdata"]
+source_file="res://addons/cheatsheet/fonts/iosevka-custom-regular.ttf"
+dest_files=["res://.godot/imported/iosevka-custom-regular.ttf-39a6d6de32a68e1f91398d4d12703938.fontdata"]
 
 [params]
 

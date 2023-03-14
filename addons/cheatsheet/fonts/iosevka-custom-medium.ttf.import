@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cf0hb73rdh8ou"
-path="res://.godot/imported/iosevka-custom-semibold.ttf-8853853f33612d6685e84db35cc1d8f1.fontdata"
+uid="uid://cpdyk86ustnxr"
+path="res://.godot/imported/iosevka-custom-medium.ttf-a3cb50d3d8360cdcfe27641b15ad00ba.fontdata"
 
 [deps]
 
-source_file="res://fonts/iosevka-custom-semibold.ttf"
-dest_files=["res://.godot/imported/iosevka-custom-semibold.ttf-8853853f33612d6685e84db35cc1d8f1.fontdata"]
+source_file="res://addons/cheatsheet/fonts/iosevka-custom-medium.ttf"
+dest_files=["res://.godot/imported/iosevka-custom-medium.ttf-a3cb50d3d8360cdcfe27641b15ad00ba.fontdata"]
 
 [params]
 

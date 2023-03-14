@@ -11,6 +11,14 @@ config_version=5
 [application]
 
 config/name="CheatSheet"
-run/main_scene="res://cheatsheet.tscn"
+run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
-config/icon="res://icon.svg"
+run/low_processor_mode=true
+
+[autoload]
+
+Cheatsheet="*res://addons/cheatsheet/cheatsheet.tscn"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/cheatsheet/plugin.cfg")

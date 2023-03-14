@@ -1,0 +1,103 @@
+[gd_scene load_steps=7 format=3 uid="uid://bs5jau2tcaupl"]
+
+[ext_resource type="Script" path="res://addons/cheatsheet/scripts/cheatsheet.gd" id="1_xc2al"]
+[ext_resource type="Theme" path="res://addons/cheatsheet/theme.tres" id="2_2jga7"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_gm0jc"]
+device = -1
+pressed = true
+keycode = 96
+unicode = 96
+
+[sub_resource type="Shortcut" id="Shortcut_20rb7"]
+events = [SubResource("InputEventKey_gm0jc")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_6epse"]
+action = &"ui_cancel"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_5nuxt"]
+events = [SubResource("InputEventAction_6epse")]
+
+[node name="Cheatsheet" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_xc2al")
+toggle_shortcut = SubResource("Shortcut_20rb7")
+close_shortcut = SubResource("Shortcut_5nuxt")
+
+[node name="VSplit" type="VSplitContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_2jga7")
+
+[node name="Menu" type="PanelContainer" parent="VSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Margin" type="MarginContainer" parent="VSplit/Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="VSplit/Menu/Margin"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ConsoleText" type="RichTextLabel" parent="VSplit/Menu/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+theme_override_font_sizes/bold_font_size = 16
+bbcode_enabled = true
+text = "[b]Welcome to the cheatsheet console[/b]
+
+[color=cdcfd280]Type '[color=abc9ff]help[/color]' to list the available commands[/color]
+
+"
+scroll_following = true
+tab_size = 16
+selection_enabled = true
+
+[node name="HBox" type="HBoxContainer" parent="VSplit/Menu/Margin/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VSplit/Menu/Margin/VBox/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.670588, 0.788235, 1, 1)
+text = "$ "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CommandInput" type="LineEdit" parent="VSplit/Menu/Margin/VBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter a command to run or type 'help' to list all commands..."
+clear_button_enabled = true
+middle_mouse_paste_enabled = false
+select_all_on_focus = true
+caret_blink_interval = 0.5
+
+[node name="RunButton" type="Button" parent="VSplit/Menu/Margin/VBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = " Run "
+
+[node name="Empty" type="Control" parent="VSplit"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="meta_clicked" from="VSplit/Menu/Margin/VBox/ConsoleText" to="." method="_on_console_text_meta_clicked"]
+[connection signal="text_changed" from="VSplit/Menu/Margin/VBox/HBox/CommandInput" to="." method="_on_command_input_text_changed"]
+[connection signal="text_submitted" from="VSplit/Menu/Margin/VBox/HBox/CommandInput" to="." method="_on_command_input_text_submitted"]
+[connection signal="pressed" from="VSplit/Menu/Margin/VBox/HBox/RunButton" to="." method="_on_run_button_pressed"]
