@@ -47,10 +47,40 @@ func register() -> void:
 		OS.shell_open(dir)
 	).tldr('opens the user:// directory (where save data is stored)')
 	
+	Console.register('stats', Console.toogle_stats)\
+		.tldr('toggles shows some basic stats about performance')
 	Console.register('timescale', func(time_scale: float): Engine.time_scale = time_scale)\
 		.arg('time_scale', TYPE_FLOAT, null, '1.0 is the defualt')\
 		.tldr('sets the engines timescale')
 	# Console.register('timescale', func(): Console.println('timescale: %s' % Engine.time_scale))
+	Console.register('maxfps', func(fps: int): Engine.max_fps = fps)\
+		.arg('fps', TYPE_INT, null)\
+		.tldr('sets the maxinum fps the engine should run at 0 means no limit as long as vsync is disable')
+	Console.register('vsync',
+		func(state: bool):
+			DisplayServer.window_set_vsync_mode(
+				DisplayServer.VSYNC_ENABLED if state else DisplayServer.VSYNC_DISABLED
+			)
+	).arg('enable', TYPE_BOOL, null, 'true to enable vsync, false to disable')\
+	.tldr('sets the vsync state of the current window - enabling will target the fps of current the display')
+	
+	Console.register('physics',
+		func():
+			Console.get_tree().debug_collisions_hint = not Console.get_tree().debug_collisions_hint
+			Console.println('on' if Console.get_tree().debug_collisions_hint else 'off')
+	).tldr('toggles showing collision shapes')
+	
+	Console.register('nav',
+		func():
+			Console.get_tree().debug_navigation_hint = not Console.get_tree().debug_navigation_hint
+			Console.println('on' if Console.get_tree().debug_navigation_hint else 'off')
+	).tldr('toggles showing navigation')
+	
+	Console.register('paths',
+		func():
+			Console.get_tree().debug_paths_hint = not Console.get_tree().debug_paths_hint
+			Console.println('on' if Console.get_tree().debug_paths_hint else 'off')
+	).tldr('toggles showing paths')
 
 func help() -> void:
 	var arr := PackedStringArray()
@@ -67,13 +97,13 @@ func help() -> void:
 	Console.println(''.join(arr))
 
 func gen_help_summary(arr: PackedStringArray, command: Command) -> void:
-	arr.append('[color=ff8ccc]%16s[/color] %s\n' % [command.name, command.toolong])
+	arr.append('[color=ff8ccc]%12s:[/color] %s\n' % [command.name, command.toolong])
 
 func clear() -> void:
 	Console.console.clear()
 
 func info() -> void:
-	Console.println('[b]%s[/b]' % ProjectSettings.get_setting('application/config/name'))
+	Console.println('[b][lb]%s[rb][/b]' % ProjectSettings.get_setting('application/config/name'))
 	Console.printlb('Godot')
 	Console.println('%s %s' % [Engine.get_version_info().string, Engine.get_architecture_name()])
 	Console.printlb('System')

@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bs5jau2tcaupl"]
+[gd_scene load_steps=10 format=3 uid="uid://bs5jau2tcaupl"]
 
 [ext_resource type="Script" path="res://addons/cheatsheet/scripts/cheatsheet.gd" id="1_xc2al"]
 [ext_resource type="Theme" uid="uid://cx73s5p668lkb" path="res://addons/cheatsheet/theme.tres" id="2_2jga7"]
+[ext_resource type="Script" path="res://addons/cheatsheet/scripts/stats_display.gd" id="3_rjkwo"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_gm0jc"]
 device = -1
@@ -19,6 +20,12 @@ pressed = true
 [sub_resource type="Shortcut" id="Shortcut_5nuxt"]
 events = [SubResource("InputEventAction_6epse")]
 
+[sub_resource type="Theme" id="Theme_jlyih"]
+Label/colors/font_shadow_color = Color(0, 0, 0, 1)
+Label/constants/shadow_offset_x = 0
+Label/constants/shadow_offset_y = 0
+Label/constants/shadow_outline_size = 6
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6pjl7"]
 
 [node name="Cheatsheet" type="CanvasLayer"]
@@ -27,7 +34,8 @@ script = ExtResource("1_xc2al")
 toggle_shortcut = SubResource("Shortcut_20rb7")
 close_shortcut = SubResource("Shortcut_5nuxt")
 
-[node name="VSplit" type="VSplitContainer" parent="."]
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -37,26 +45,68 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("2_2jga7")
 
-[node name="Menu" type="PanelContainer" parent="VSplit"]
+[node name="StatsDisplay" type="MarginContainer" parent="GUI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 37.0
+grow_horizontal = 2
+theme = SubResource("Theme_jlyih")
+script = ExtResource("3_rjkwo")
+
+[node name="HBoxContainer" type="HFlowContainer" parent="GUI/StatsDisplay"]
+layout_mode = 2
+theme_override_constants/h_separation = 32
+alignment = 1
+
+[node name="TimeLabel" type="Label" parent="GUI/StatsDisplay/HBoxContainer"]
+layout_mode = 2
+text = "FPS: 60"
+
+[node name="MemLabel" type="Label" parent="GUI/StatsDisplay/HBoxContainer"]
+layout_mode = 2
+text = "MEM: 50% 50MB/100MB"
+
+[node name="RenderLabel" type="Label" parent="GUI/StatsDisplay/HBoxContainer"]
+layout_mode = 2
+text = "VRAM: 10MB"
+
+[node name="ObjLabel" type="Label" parent="GUI/StatsDisplay/HBoxContainer"]
+layout_mode = 2
+text = "1234 objects and 123 nodes"
+
+[node name="VSplit" type="VSplitContainer" parent="GUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Menu" type="PanelContainer" parent="GUI/VSplit"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Margin" type="MarginContainer" parent="VSplit/Menu"]
+[node name="Margin" type="MarginContainer" parent="GUI/VSplit/Menu"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBox" type="VBoxContainer" parent="VSplit/Menu/Margin"]
+[node name="VBox" type="VBoxContainer" parent="GUI/VSplit/Menu/Margin"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ConsoleText" type="RichTextLabel" parent="VSplit/Menu/Margin/VBox"]
+[node name="ConsoleText" type="RichTextLabel" parent="GUI/VSplit/Menu/Margin/VBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 2
+mouse_default_cursor_shape = 1
 theme_override_font_sizes/bold_font_size = 16
 theme_override_styles/focus = SubResource("StyleBoxEmpty_6pjl7")
 bbcode_enabled = true
@@ -68,18 +118,18 @@ scroll_following = true
 tab_size = 24
 selection_enabled = true
 
-[node name="HBox" type="HBoxContainer" parent="VSplit/Menu/Margin/VBox"]
+[node name="HBox" type="HBoxContainer" parent="GUI/VSplit/Menu/Margin/VBox"]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="VSplit/Menu/Margin/VBox/HBox"]
+[node name="Label" type="Label" parent="GUI/VSplit/Menu/Margin/VBox/HBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.670588, 0.788235, 1, 1)
+theme_override_colors/font_color = Color(0.258824, 1, 0.760784, 1)
 text = "$ "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CommandInput" type="LineEdit" parent="VSplit/Menu/Margin/VBox/HBox"]
+[node name="CommandInput" type="LineEdit" parent="GUI/VSplit/Menu/Margin/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -89,17 +139,34 @@ middle_mouse_paste_enabled = false
 select_all_on_focus = true
 caret_blink_interval = 0.5
 
-[node name="RunButton" type="Button" parent="VSplit/Menu/Margin/VBox/HBox"]
+[node name="RunButton" type="Button" parent="GUI/VSplit/Menu/Margin/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = " Run "
 
-[node name="Empty" type="Control" parent="VSplit"]
+[node name="Empty" type="Control" parent="GUI/VSplit"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[connection signal="meta_clicked" from="VSplit/Menu/Margin/VBox/ConsoleText" to="." method="_on_console_text_meta_clicked"]
-[connection signal="text_changed" from="VSplit/Menu/Margin/VBox/HBox/CommandInput" to="." method="_on_command_input_text_changed"]
-[connection signal="text_submitted" from="VSplit/Menu/Margin/VBox/HBox/CommandInput" to="." method="_on_command_input_text_submitted"]
-[connection signal="pressed" from="VSplit/Menu/Margin/VBox/HBox/RunButton" to="." method="_on_run_button_pressed"]
+[node name="ConsoleKeyPrompt" type="PanelContainer" parent="GUI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+offset_right = 219.0
+offset_bottom = 37.0
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI/ConsoleKeyPrompt"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="GUI/ConsoleKeyPrompt/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Press [`] to open the console"
+
+[connection signal="meta_clicked" from="GUI/VSplit/Menu/Margin/VBox/ConsoleText" to="." method="_on_console_text_meta_clicked"]
+[connection signal="text_changed" from="GUI/VSplit/Menu/Margin/VBox/HBox/CommandInput" to="." method="_on_command_input_text_changed"]
+[connection signal="text_submitted" from="GUI/VSplit/Menu/Margin/VBox/HBox/CommandInput" to="." method="_on_command_input_text_submitted"]
+[connection signal="pressed" from="GUI/VSplit/Menu/Margin/VBox/HBox/RunButton" to="." method="_on_run_button_pressed"]

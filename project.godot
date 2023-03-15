@@ -13,6 +13,7 @@ config_version=5
 config/name="CheatSheet"
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
+run/max_fps=30
 run/low_processor_mode=true
 
 [autoload]

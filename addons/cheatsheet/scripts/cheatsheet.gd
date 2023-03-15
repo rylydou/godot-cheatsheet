@@ -11,6 +11,8 @@ const CoreCommands := preload('res://addons/cheatsheet/scripts/core_commands.gd'
 @onready var console: RichTextLabel = %ConsoleText
 @onready var command_input: LineEdit = %CommandInput
 @onready var run_button: Button = %RunButton
+@onready var console_key_prompt: Control = %ConsoleKeyPrompt
+@onready var stats_display: Control = %StatsDisplay
 
 var history: Array[String] = []
 var db := CommandDB.new()
@@ -18,8 +20,16 @@ var db := CommandDB.new()
 func _ready() -> void:
 	menu.hide()
 	menu.position.y = -menu.size.y
+	stats_display.hide()
 	
 	CoreCommands.new().register()
+	
+	console_key_prompt.position.y = -console_key_prompt.size.y
+	var tween := create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_QUART)
+	tween.tween_property(console_key_prompt, 'position:y', 0., .1).set_delay(1.)
+	tween.tween_property(console_key_prompt, 'position:y', -console_key_prompt.size.y, .1).set_delay(3.)
 
 func _shortcut_input(event: InputEvent) -> void:
 	if close_shortcut.matches_event(event) and event.is_pressed():
@@ -48,7 +58,7 @@ func open() -> void:
 	slide_tween = create_tween()
 	slide_tween.set_ease(Tween.EASE_OUT)
 	slide_tween.set_trans(Tween.TRANS_QUART)
-	slide_tween.tween_property(menu, 'position:y', 0, .4)
+	slide_tween.tween_property(menu, 'position:y', 0, .4).from_current()
 
 func close() -> void:
 	if not is_cheatsheet_open: return
@@ -61,14 +71,14 @@ func close() -> void:
 	slide_tween = create_tween()
 	slide_tween.set_ease(Tween.EASE_OUT)
 	slide_tween.set_trans(Tween.TRANS_QUART)
-	slide_tween.tween_property(menu, 'position:y', -menu.size.y, .4)
+	slide_tween.tween_property(menu, 'position:y', -menu.size.y, .4).from_current()
 	slide_tween.tween_callback(menu.hide)
 
 func register(name: String, callback: Callable) -> Command:
 	return db.register(name, callback)
 
 func printlb(text:String) -> void:
-	console.append_text('[color=ff8ccc]%10s:[/color] ' % text)
+	console.append_text('[color=ff8ccc]%12s:[/color] ' % text)
 
 func println(bbcode: String) -> void:
 	console.append_text(bbcode)
@@ -89,6 +99,9 @@ func run() -> void:
 	db.run(str)
 	
 	history.append(str)
+
+func toogle_stats():
+	stats_display.visible = not stats_display.visible
 
 func _on_run_button_pressed() -> void:
 	run()
