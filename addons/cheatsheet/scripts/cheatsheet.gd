@@ -1,6 +1,8 @@
 extends CanvasLayer
 
+const Command := preload('res://addons/cheatsheet/scripts/command.gd')
 const CommandDB := preload('res://addons/cheatsheet/scripts/command_db.gd')
+const CoreCommands := preload('res://addons/cheatsheet/scripts/core_commands.gd')
 
 @export var toggle_shortcut: Shortcut
 @export var close_shortcut: Shortcut
@@ -17,10 +19,7 @@ func _ready() -> void:
 	menu.hide()
 	menu.position.y = -menu.size.y
 	
-	db.unknown_command.connect(
-		func(name):
-			println("[color=ff7085]unknown command '%s'[/color]" % name)
-	)
+	CoreCommands.new().register()
 
 func _shortcut_input(event: InputEvent) -> void:
 	if close_shortcut.matches_event(event) and event.is_pressed():
@@ -49,7 +48,7 @@ func open() -> void:
 	slide_tween = create_tween()
 	slide_tween.set_ease(Tween.EASE_OUT)
 	slide_tween.set_trans(Tween.TRANS_QUART)
-	slide_tween.tween_property(menu, 'position:y', 0, 0.2).from(-menu.size.y)
+	slide_tween.tween_property(menu, 'position:y', 0, .4)
 
 func close() -> void:
 	if not is_cheatsheet_open: return
@@ -60,13 +59,16 @@ func close() -> void:
 	if slide_tween:
 		slide_tween.kill()
 	slide_tween = create_tween()
-	slide_tween.set_ease(Tween.EASE_IN)
-	slide_tween.set_trans(Tween.TRANS_SINE)
-	slide_tween.tween_property(menu, 'position:y', -menu.size.y, 0.2)
+	slide_tween.set_ease(Tween.EASE_OUT)
+	slide_tween.set_trans(Tween.TRANS_QUART)
+	slide_tween.tween_property(menu, 'position:y', -menu.size.y, .4)
 	slide_tween.tween_callback(menu.hide)
 
+func register(name: String, callback: Callable) -> Command:
+	return db.register(name, callback)
+
 func printlb(text:String) -> void:
-	console.append_text('[color=ff8ccc]%s:[/color]\t' % text)
+	console.append_text('[color=ff8ccc]%10s:[/color] ' % text)
 
 func println(bbcode: String) -> void:
 	console.append_text(bbcode)
@@ -81,7 +83,7 @@ func run() -> void:
 	if str.length() == 0: return
 	command_input.clear()
 	
-	console.append_text('[color=42ffc2]$[/color] ')
+	console.append_text('\n[color=42ffc2]$[/color] ')
 	console.add_text(str)
 	console.add_text('\n')
 	db.run(str)
@@ -95,6 +97,9 @@ func _on_command_input_text_submitted(new_text: String) -> void:
 	run()
 
 func _on_command_input_text_changed(new_text: String) -> void:
+	if new_text == '`':
+		command_input.clear()
+		close()
 	var is_empty := new_text.length() == 0
 	run_button.disabled = is_empty
 

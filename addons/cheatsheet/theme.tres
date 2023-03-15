@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=2 format=3]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cx73s5p668lkb"]
 
 [ext_resource type="FontFile" uid="uid://cf0hb73rdh8ou" path="res://addons/cheatsheet/fonts/iosevka-custom-semibold.ttf" id="1_o2qxq"]
 
@@ -12,5 +12,6 @@ MarginContainer/constants/margin_bottom = 8
 MarginContainer/constants/margin_left = 8
 MarginContainer/constants/margin_right = 8
 MarginContainer/constants/margin_top = 8
+RichTextLabel/colors/selection_color = Color(0.439216, 0.729412, 0.980392, 0.4)
 TabContainer/constants/side_margin = 0
 VBoxContainer/constants/separation = 4

@@ -17,7 +17,7 @@ run/low_processor_mode=true
 
 [autoload]
 
-Cheatsheet="*res://addons/cheatsheet/cheatsheet.tscn"
+Console="*res://addons/cheatsheet/cheatsheet.tscn"
 
 [editor_plugins]
 

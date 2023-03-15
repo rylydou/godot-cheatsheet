@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bs5jau2tcaupl"]
+[gd_scene load_steps=8 format=3 uid="uid://bs5jau2tcaupl"]
 
 [ext_resource type="Script" path="res://addons/cheatsheet/scripts/cheatsheet.gd" id="1_xc2al"]
-[ext_resource type="Theme" path="res://addons/cheatsheet/theme.tres" id="2_2jga7"]
+[ext_resource type="Theme" uid="uid://cx73s5p668lkb" path="res://addons/cheatsheet/theme.tres" id="2_2jga7"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_gm0jc"]
 device = -1
@@ -18,6 +18,8 @@ pressed = true
 
 [sub_resource type="Shortcut" id="Shortcut_5nuxt"]
 events = [SubResource("InputEventAction_6epse")]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6pjl7"]
 
 [node name="Cheatsheet" type="CanvasLayer"]
 process_mode = 3
@@ -56,14 +58,14 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 2
 theme_override_font_sizes/bold_font_size = 16
+theme_override_styles/focus = SubResource("StyleBoxEmpty_6pjl7")
 bbcode_enabled = true
 text = "[b]Welcome to the cheatsheet console[/b]
 
 [color=cdcfd280]Type '[color=abc9ff]help[/color]' to list the available commands[/color]
-
 "
 scroll_following = true
-tab_size = 16
+tab_size = 24
 selection_enabled = true
 
 [node name="HBox" type="HBoxContainer" parent="VSplit/Menu/Margin/VBox"]

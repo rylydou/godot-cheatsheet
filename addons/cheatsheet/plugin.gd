@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 
-const PLUGIN_NAME = 'Cheatsheet'
+const PLUGIN_NAME = 'Console'
 const PLUGIN_PATH = 'res://addons/cheatsheet/cheatsheet.tscn'
 
 func _enter_tree() -> void:

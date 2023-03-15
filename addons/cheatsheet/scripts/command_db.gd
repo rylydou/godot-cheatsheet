@@ -1,8 +1,7 @@
 extends RefCounted
 
 const Command := preload('res://addons/cheatsheet/scripts/command.gd')
-
-signal unknown_command(name: String)
+const Argument := preload('res://addons/cheatsheet/scripts/argument.gd')
 
 var commands: Dictionary
 
@@ -18,17 +17,63 @@ func register(name: String, callback: Callable) -> Command:
 
 func run(str: String) -> void:
 	var name := str.substr(0, str.find(' '))
-	if not commands.has(name):
-		unknown_command.emit(name)
-		return
-	
-	var root_commands = commands[name]
 	var args := get_args(str.substr(name.length() + 1))
-	#print('args:', args)
 	
-	var command: Callable = root_commands[0]
+	var command := find_command(name, args)
+	if not command: return
 	
-	command.callv(args)
+	var real_args := []
+	for i in args.size():
+		var input_arg := args[i] 
+		var command_arg := command.args[i]
+		real_args.append(command_arg.convert(input_arg))
+	command.callback.callv(real_args)
+
+func find_command(name: String, args: Array[String]) -> Command:
+	var command: Command
+	
+	if not self.commands.has(name):
+		Console.println("[color=ff7085]unknown command '%s'[/color]" % name)
+		return null
+	var commands: Array = self.commands[name]
+	
+	if commands.size() == 1:
+		command = commands[0]
+		# check argument count
+		if not command.args.size() == args.size():
+			Console.println("[color=ff7085]expected %s arguments but got %s instead[/color]" % [command.args.size(), args.size()])
+			return null
+		# check argument types
+		for i in args.size():
+			var input_arg := args[i] 
+			var command_arg := command.args[i]
+			if not command_arg.check(input_arg):
+				var exp_name := Argument.type_names[command_arg.type]
+				Console.println(
+					"[color=ff7085]expected type of '%s' for '%s' but got '%s' instead[/color]" %
+					[exp_name, command_arg.name, input_arg]
+				)
+				return null
+		return command
+	
+	commands = commands.filter(func(c: Command): c.args.size() == args.size())
+	if commands.size() == 0:
+		Console.println("[color=ff7085]couldn't find command with %s arguments[/color]" % [args.size()])
+		return null
+	
+	for c in commands:
+		var perfect_flag := true
+		for i in args.size():
+			var input_arg := args[i] 
+			var command_arg := command.args[i]
+			if not command_arg.check(input_arg):
+				perfect_flag = false
+				break
+		if perfect_flag:
+			return command
+	
+	Console.println("[color=ff7085]couldn't find command with those argument types[/color]")
+	return null
 
 func get_args(str: String) -> PackedStringArray:
 	var args: PackedStringArray
