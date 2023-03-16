@@ -18,7 +18,6 @@ func register(name: String, callback: Callable) -> Command:
 func run(str: String) -> void:
 	var name := str.substr(0, str.find(' '))
 	var args := get_args(str.substr(name.length() + 1))
-	
 	var command := find_command(name, args)
 	if not command: return
 	
@@ -33,7 +32,7 @@ func find_command(name: String, args: Array[String]) -> Command:
 	var command: Command
 	
 	if not self.commands.has(name):
-		Console.println("[color=ff7085]unknown command '%s'[/color]" % name)
+		Console.error("unknown command '%s'" % name)
 		return null
 	var commands: Array = self.commands[name]
 	
@@ -41,7 +40,7 @@ func find_command(name: String, args: Array[String]) -> Command:
 		command = commands[0]
 		# check argument count
 		if not command.args.size() == args.size():
-			Console.println("[color=ff7085]expected %s arguments but got %s instead[/color]" % [command.args.size(), args.size()])
+			Console.error("expected %s arguments but got %s" % [command.args.size(), args.size()])
 			return null
 		# check argument types
 		for i in args.size():
@@ -49,30 +48,35 @@ func find_command(name: String, args: Array[String]) -> Command:
 			var command_arg := command.args[i]
 			if not command_arg.check(input_arg):
 				var exp_name := Argument.type_names[command_arg.type]
-				Console.println(
-					"[color=ff7085]expected type of '%s' for '%s' but got '%s' instead[/color]" %
+				Console.error(
+					"expected type of '%s' for '%s' but got '%s'" %
 					[exp_name, command_arg.name, input_arg]
 				)
 				return null
 		return command
 	
-	commands = commands.filter(func(c: Command): c.args.size() == args.size())
-	if commands.size() == 0:
-		Console.println("[color=ff7085]couldn't find command with %s arguments[/color]" % [args.size()])
-		return null
+	# using `Array.filter` causes a crash for some reason
+	var new_commands := []
+	for c in commands:
+		if c.args.size() == args.size():
+			new_commands.append(c)
+	commands = new_commands
 	
+	if commands.size() == 0:
+		Console.error("couldn't find command with %s arguments" % [args.size()])
+		return null
 	for c in commands:
 		var perfect_flag := true
 		for i in args.size():
 			var input_arg := args[i] 
-			var command_arg := command.args[i]
+			var command_arg: Argument = c.args[i]
 			if not command_arg.check(input_arg):
 				perfect_flag = false
 				break
 		if perfect_flag:
-			return command
+			return c
 	
-	Console.println("[color=ff7085]couldn't find command with those argument types[/color]")
+	Console.error("couldn't find command with those argument types")
 	return null
 
 func get_args(str: String) -> PackedStringArray:

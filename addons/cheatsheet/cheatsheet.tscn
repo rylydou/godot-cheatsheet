@@ -65,16 +65,17 @@ layout_mode = 2
 text = "FPS: 60"
 
 [node name="MemLabel" type="Label" parent="GUI/StatsDisplay/HBoxContainer"]
+visible = false
 layout_mode = 2
 text = "MEM: 50% 50MB/100MB"
-
-[node name="RenderLabel" type="Label" parent="GUI/StatsDisplay/HBoxContainer"]
-layout_mode = 2
-text = "VRAM: 10MB"
 
 [node name="ObjLabel" type="Label" parent="GUI/StatsDisplay/HBoxContainer"]
 layout_mode = 2
 text = "1234 objects and 123 nodes"
+
+[node name="RenderLabel" type="Label" parent="GUI/StatsDisplay/HBoxContainer"]
+layout_mode = 2
+text = "VRAM: 10MB"
 
 [node name="VSplit" type="VSplitContainer" parent="GUI"]
 layout_mode = 1
@@ -112,10 +113,9 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_6pjl7")
 bbcode_enabled = true
 text = "[b]Welcome to the cheatsheet console[/b]
 
-[color=cdcfd280]Type '[color=abc9ff]help[/color]' to list the available commands[/color]
+[color=gray]Type '[color=ff8ccc]help[/color]' to list the available commands[/color]
 "
 scroll_following = true
-tab_size = 24
 selection_enabled = true
 
 [node name="HBox" type="HBoxContainer" parent="GUI/VSplit/Menu/Margin/VBox"]

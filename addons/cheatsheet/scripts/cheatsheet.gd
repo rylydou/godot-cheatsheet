@@ -77,16 +77,18 @@ func close() -> void:
 func register(name: String, callback: Callable) -> Command:
 	return db.register(name, callback)
 
-func printlb(text:String) -> void:
-	console.append_text('[color=ff8ccc]%12s:[/color] ' % text)
-
 func println(bbcode: String) -> void:
 	console.append_text(bbcode)
 	console.add_text('\n')
 
-func putln(text: String) -> void:
-	console.add_text(text)
-	console.add_text('\n')
+func print(bbcode: String) -> void:
+	console.append_text(bbcode)
+
+func printlb(text:String) -> void:
+	console.append_text('[color=ff8ccc]%12s:[/color] ' % text)
+
+func error(bbcode:String) -> void:
+	console.append_text('[color=ff7085]%s[/color]' % bbcode)
 
 func run() -> void:
 	var str := command_input.text

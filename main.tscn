@@ -1,10 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://bq1oafm52wjxm"]
+[gd_scene load_steps=3 format=3 uid="uid://bq1oafm52wjxm"]
 
 [sub_resource type="Curve2D" id="Curve2D_s47v5"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 838, 238, 0, 0, 0, 0, 855, 375, 0, 0, 0, 0, 653, 550, 0, 0, 0, 0, 412, 548, 0, 0, 0, 0, 287, 384, 0, 0, 0, 0, 88, 313, 0, 0, 0, 0, 135, 118, 0, 0, 0, 0, 242, 201, 0, 0, 0, 0, 360, 84, 0, 0, 0, 0, 507, 200, 0, 0, 0, 0, 678, 51, 0, 0, 0, 0, 730, 167, 0, 0, 0, 0, 817, 174)
 }
 point_count = 13
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0fn7d"]
+radius = 64.0
 
 [node name="Main" type="Node"]
 
@@ -13,3 +16,9 @@ points = PackedVector2Array(424, 349, 573, 412, 702, 207, 452, 151, 484, 264, 22
 
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource("Curve2D_s47v5")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(663, 438)
+shape = SubResource("CircleShape2D_0fn7d")

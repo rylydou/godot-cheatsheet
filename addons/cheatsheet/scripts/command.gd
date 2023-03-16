@@ -8,14 +8,9 @@ func _init(name: String, callback: Callable) -> void:
 	self.name = name
 	self.callback = callback
 
-var toolong: String
-func tldr(text: String):
-	toolong = text
-	return self
-
-var description: String
-func desc(text: String):
-	description = text
+var infos: String
+func info(text: String):
+	infos = text
 	return self
 
 var args: Array[Argument]
