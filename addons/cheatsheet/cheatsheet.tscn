@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://bs5jau2tcaupl"]
+[gd_scene load_steps=13 format=3 uid="uid://bs5jau2tcaupl"]
 
 [ext_resource type="Script" path="res://addons/cheatsheet/scripts/cheatsheet.gd" id="1_xc2al"]
 [ext_resource type="Theme" uid="uid://cx73s5p668lkb" path="res://addons/cheatsheet/theme.tres" id="2_2jga7"]
 [ext_resource type="Script" path="res://addons/cheatsheet/scripts/stats_display.gd" id="3_rjkwo"]
+[ext_resource type="Material" uid="uid://djy8vjdw5lvhj" path="res://addons/cheatsheet/shaders/background.tres" id="4_8o8u8"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_gm0jc"]
 device = -1
@@ -26,7 +27,13 @@ Label/constants/shadow_offset_x = 0
 Label/constants/shadow_offset_y = 0
 Label/constants/shadow_outline_size = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nf52s"]
+bg_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6pjl7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ex44x"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="Cheatsheet" type="CanvasLayer"]
 process_mode = 3
@@ -89,8 +96,10 @@ size_flags_vertical = 3
 
 [node name="Menu" type="PanelContainer" parent="GUI/VSplit"]
 unique_name_in_owner = true
+material = ExtResource("4_8o8u8")
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_nf52s")
 
 [node name="Margin" type="MarginContainer" parent="GUI/VSplit/Menu"]
 layout_mode = 2
@@ -106,7 +115,6 @@ custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-focus_mode = 2
 mouse_default_cursor_shape = 1
 theme_override_font_sizes/bold_font_size = 16
 theme_override_styles/focus = SubResource("StyleBoxEmpty_6pjl7")
@@ -116,7 +124,6 @@ text = "[b]Welcome to the cheatsheet console[/b]
 [color=gray]Type '[color=ff8ccc]help[/color]' to list the available commands[/color]
 "
 scroll_following = true
-selection_enabled = true
 
 [node name="HBox" type="HBoxContainer" parent="GUI/VSplit/Menu/Margin/VBox"]
 layout_mode = 2
@@ -139,11 +146,11 @@ middle_mouse_paste_enabled = false
 select_all_on_focus = true
 caret_blink_interval = 0.5
 
-[node name="RunButton" type="Button" parent="GUI/VSplit/Menu/Margin/VBox/HBox"]
-unique_name_in_owner = true
+[node name="PickerButton" type="Button" parent="GUI/VSplit/Menu/Margin/VBox/HBox"]
 layout_mode = 2
+focus_mode = 1
 disabled = true
-text = " Run "
+text = " Palette "
 
 [node name="Empty" type="Control" parent="GUI/VSplit"]
 layout_mode = 2
@@ -152,9 +159,11 @@ size_flags_vertical = 3
 [node name="ConsoleKeyPrompt" type="PanelContainer" parent="GUI"]
 unique_name_in_owner = true
 visible = false
+material = ExtResource("4_8o8u8")
 layout_mode = 1
 offset_right = 219.0
 offset_bottom = 37.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ex44x")
 
 [node name="MarginContainer" type="MarginContainer" parent="GUI/ConsoleKeyPrompt"]
 layout_mode = 2
@@ -167,6 +176,6 @@ size_flags_vertical = 1
 text = "Press [`] to open the console"
 
 [connection signal="meta_clicked" from="GUI/VSplit/Menu/Margin/VBox/ConsoleText" to="." method="_on_console_text_meta_clicked"]
+[connection signal="gui_input" from="GUI/VSplit/Menu/Margin/VBox/HBox/CommandInput" to="." method="_on_command_input_gui_input"]
 [connection signal="text_changed" from="GUI/VSplit/Menu/Margin/VBox/HBox/CommandInput" to="." method="_on_command_input_text_changed"]
 [connection signal="text_submitted" from="GUI/VSplit/Menu/Margin/VBox/HBox/CommandInput" to="." method="_on_command_input_text_submitted"]
-[connection signal="pressed" from="GUI/VSplit/Menu/Margin/VBox/HBox/RunButton" to="." method="_on_run_button_pressed"]

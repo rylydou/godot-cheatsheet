@@ -10,11 +10,11 @@ const CoreCommands := preload('res://addons/cheatsheet/scripts/core_commands.gd'
 @onready var menu: Control = %Menu
 @onready var console: RichTextLabel = %ConsoleText
 @onready var command_input: LineEdit = %CommandInput
-@onready var run_button: Button = %RunButton
 @onready var console_key_prompt: Control = %ConsoleKeyPrompt
 @onready var stats_display: Control = %StatsDisplay
 
 var history: Array[String] = []
+var history_index := -1
 var db := CommandDB.new()
 
 func _ready() -> void:
@@ -25,24 +25,28 @@ func _ready() -> void:
 	CoreCommands.new().register()
 	
 	console_key_prompt.position.y = -console_key_prompt.size.y
+	console_key_prompt.show()
 	var tween := create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_QUART)
 	tween.tween_property(console_key_prompt, 'position:y', 0., .1).set_delay(1.)
 	tween.tween_property(console_key_prompt, 'position:y', -console_key_prompt.size.y, .1).set_delay(3.)
+	tween.tween_callback(console_key_prompt.hide)
 
 func _shortcut_input(event: InputEvent) -> void:
 	if close_shortcut.matches_event(event) and event.is_pressed():
-		get_viewport().set_input_as_handled()
 		close()
+		get_viewport().set_input_as_handled()
+		return
 	
 	if toggle_shortcut.matches_event(event) and event.is_pressed():
-		get_viewport().set_input_as_handled()
 		if is_cheatsheet_open:
 			close()
 		else:
 			command_input.clear()
 			open()
+		get_viewport().set_input_as_handled()
+		return
 
 var is_cheatsheet_open := false
 var slide_tween: Tween
@@ -50,6 +54,7 @@ func open() -> void:
 	if is_cheatsheet_open: return
 	is_cheatsheet_open = true
 	
+	console_key_prompt.hide()
 	menu.show()
 	command_input.grab_focus()
 	
@@ -58,7 +63,7 @@ func open() -> void:
 	slide_tween = create_tween()
 	slide_tween.set_ease(Tween.EASE_OUT)
 	slide_tween.set_trans(Tween.TRANS_QUART)
-	slide_tween.tween_property(menu, 'position:y', 0, .4).from_current()
+	slide_tween.tween_property(menu, 'position:y', 0, .3).from_current()
 
 func close() -> void:
 	if not is_cheatsheet_open: return
@@ -100,7 +105,10 @@ func run() -> void:
 	console.add_text('\n')
 	db.run(str)
 	
-	history.append(str)
+	history.push_front(str)
+	if history.size() > 20:
+		history.pop_back()
+	history_index = -1
 
 func toogle_stats():
 	stats_display.visible = not stats_display.visible
@@ -115,8 +123,32 @@ func _on_command_input_text_changed(new_text: String) -> void:
 	if new_text == '`':
 		command_input.clear()
 		close()
-	var is_empty := new_text.length() == 0
-	run_button.disabled = is_empty
+	history_index = -1
 
 func _on_console_text_meta_clicked(meta) -> void:
 	OS.shell_open(meta)
+
+func _on_command_input_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed('ui_up'):
+		if history_index < history.size() - 1:
+			history_index += 1
+			update_history()
+		command_input.grab_focus()
+		get_viewport().set_input_as_handled()
+		return
+	
+	if event.is_action_pressed('ui_down'):
+		if history_index >= 0:
+			history_index -= 1
+			update_history()
+		command_input.grab_focus()
+		get_viewport().set_input_as_handled()
+		return
+
+func update_history() -> void:
+	if history_index >= 0:
+		command_input.text = history[history_index]
+		command_input.caret_column = command_input.text.length()
+		return
+	
+	command_input.text = ''

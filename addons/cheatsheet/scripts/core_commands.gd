@@ -1,4 +1,4 @@
-extends RefCounted
+extends Object
 
 const Command := preload('res://addons/cheatsheet/scripts/command.gd')
 const Argument := preload('res://addons/cheatsheet/scripts/argument.gd')
@@ -6,30 +6,24 @@ const Argument := preload('res://addons/cheatsheet/scripts/argument.gd')
 func register() -> void:
 	Console.register('help',
 		func():
-			const colors := [
-				'lightblue',
-				'lightpink',
-				'wheat',
-			]
 			var arr := PackedStringArray()
 			arr.append("[color=gray]Type '[color=ff8ccc]help [lb]command[rb][/color]' to get more info on a command.\n'?' means there are more than one way of calling it.[/color]\n\n")
-			var is_even := false
+			
 			var index := 1
 			for name in Console.db.commands:
 				var collection:Array = Console.db.commands[name]
-				#for command in collection:
 				var command: Command = collection[0]
-				#if is_even:
-				arr.append('[color=%s]' % colors[index % colors.size()])
+				arr.append('[color=%s]' % color(command.name))
 				var txt := command.name
 				if collection.size() > 1:
 					txt += '?'
+				
 				arr.append('%-12s' % txt)
+				
 				if index % 5 == 0:
 					arr.append('\n')
-				#if is_even:
+				
 				arr.append('[/color]')
-				is_even = not is_even
 				index += 1
 			Console.println(''.join(arr))
 	).info('prints a list of all the commands')
@@ -42,7 +36,7 @@ func register() -> void:
 			var commands: Array = Console.db.commands[name]
 			var arr := PackedStringArray()
 			for command in commands:
-				arr.append('[color=ff8ccc]%s[/color] ' % command.name)
+				arr.append('[color=%s]%s[/color] ' % [color(command.name), command.name])
 				for arg in command.args:
 					arr.append('[lb]%s: %s[rb] ' % [arg.name, Argument.type_names[arg.type]])
 				arr.append('\n\t[color=gray]%s[/color]\n' % command.infos)
@@ -142,3 +136,14 @@ func register() -> void:
 			Console.get_tree().debug_paths_hint = not Console.get_tree().debug_paths_hint
 			Console.println('on' if Console.get_tree().debug_paths_hint else 'off')
 	).info('toggles showing paths')
+
+var rng := RandomNumberGenerator.new()
+
+func color(x: Variant) -> String:
+	const colors := [
+	'ff7085','abc8ff','57b3ff',
+	'ff7085','bce0ff','42ffc2',
+	'42ffc2','8effda','ffeca1',
+	'63c259',]
+	rng.seed = hash(x)
+	return colors[rng.randi()%colors.size()]
