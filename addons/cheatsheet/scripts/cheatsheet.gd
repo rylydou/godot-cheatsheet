@@ -1,8 +1,11 @@
+@icon('res://addons/cheatsheet/icon_mono.svg')
 extends CanvasLayer
 
 const Command := preload('res://addons/cheatsheet/scripts/command.gd')
 const CommandDB := preload('res://addons/cheatsheet/scripts/command_db.gd')
 const CoreCommands := preload('res://addons/cheatsheet/scripts/core_commands.gd')
+
+signal commands_changed()
 
 @export var toggle_shortcut: Shortcut
 @export var close_shortcut: Shortcut
@@ -80,7 +83,9 @@ func close() -> void:
 	slide_tween.tween_callback(menu.hide)
 
 func register(name: String, callback: Callable) -> Command:
-	return db.register(name, callback)
+	var command := db.register(name, callback)
+	commands_changed.emit()
+	return command
 
 func println(bbcode: String) -> void:
 	console.append_text(bbcode)
@@ -112,9 +117,6 @@ func run() -> void:
 
 func toogle_stats():
 	stats_display.visible = not stats_display.visible
-
-func _on_run_button_pressed() -> void:
-	run()
 
 func _on_command_input_text_submitted(new_text: String) -> void:
 	run()

@@ -1,19 +1,6 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://cx73s5p668lkb"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cx73s5p668lkb"]
 
 [ext_resource type="FontFile" uid="uid://cf0hb73rdh8ou" path="res://addons/cheatsheet/fonts/iosevka-custom-semibold.ttf" id="1_o2qxq"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fo8k6"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_webmu"]
-bg_color = Color(0, 0, 0, 0.501961)
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 0.25098)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-expand_margin_left = 6.0
-expand_margin_right = 6.0
 
 [resource]
 default_font = ExtResource("1_o2qxq")
@@ -21,8 +8,6 @@ default_font_size = 14
 FlowContainer/constants/h_separation = 4
 FlowContainer/constants/v_separation = 4
 HBoxContainer/constants/separation = 4
-LineEdit/styles/focus = SubResource("StyleBoxEmpty_fo8k6")
-LineEdit/styles/normal = SubResource("StyleBoxFlat_webmu")
 MarginContainer/constants/margin_bottom = 8
 MarginContainer/constants/margin_left = 8
 MarginContainer/constants/margin_right = 8

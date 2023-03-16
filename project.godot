@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="CheatSheet"
-run/main_scene="res://main.tscn"
+config/name="Cheatsheet"
+run/main_scene="res://addons/cheatsheet/main.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 run/low_processor_mode=true
 

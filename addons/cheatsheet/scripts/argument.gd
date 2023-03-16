@@ -2,16 +2,12 @@ extends RefCounted
 
 var name: String
 var type: Variant.Type
-var defualt: Variant
-var info: String
 
-func _init(name: String, type: Variant.Type, defualt: Variant, info: String) -> void:
+func _init(name: String, type: Variant.Type) -> void:
 	if type >= regexes.size() or regexes[type] == null:
 		printerr('type of %s is unsupported' % type)
 	self.name = name
 	self.type = type
-	self.defualt = defualt
-	self.info = info
 
 const type_names: Array[String] = [
 	'any',

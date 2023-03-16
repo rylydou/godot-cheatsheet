@@ -13,7 +13,7 @@ func register() -> void:
 			for name in Console.db.commands:
 				var collection:Array = Console.db.commands[name]
 				var command: Command = collection[0]
-				arr.append('[color=%s]' % color(command.name))
+				arr.append('[color=%s]' % command.get_color())
 				var txt := command.name
 				if collection.size() > 1:
 					txt += '?'
@@ -36,7 +36,7 @@ func register() -> void:
 			var commands: Array = Console.db.commands[name]
 			var arr := PackedStringArray()
 			for command in commands:
-				arr.append('[color=%s]%s[/color] ' % [color(command.name), command.name])
+				arr.append('[color=%s]%s[/color] ' % [command.get_color(), command.name])
 				for arg in command.args:
 					arr.append('[lb]%s: %s[rb] ' % [arg.name, Argument.type_names[arg.type]])
 				arr.append('\n\t[color=gray]%s[/color]\n' % command.infos)
@@ -69,10 +69,10 @@ func register() -> void:
 	).info('prints info about the current enviorment')
 	
 	Console.register('quit', Console.get_tree().quit)\
-		.arg('code', TYPE_INT, 0, 'the exit code')\
+		.arg('code', TYPE_INT)\
 		.info('quits the app')
 	Console.register('crash', OS.crash)\
-		.arg('message', TYPE_STRING, '', 'the error message')\
+		.arg('message', TYPE_STRING)\
 		.info('crashes the app')
 	
 	Console.register('reload', Console.get_tree().reload_current_scene)\
@@ -106,17 +106,17 @@ func register() -> void:
 	Console.register('timescale', func(): Console.println('timescale: %s' % Engine.time_scale))\
 		.info('gets the engine timescale')
 	Console.register('timescale', func(time_scale: float): Engine.time_scale = time_scale)\
-		.arg('time_scale', TYPE_FLOAT, null, '1.0 is the defualt')\
+		.arg('time_scale', TYPE_FLOAT)\
 		.info('sets the engine timescale, lower means slower')
 	Console.register('maxfps', func(fps: int): Engine.max_fps = fps)\
-		.arg('fps', TYPE_INT, null)\
+		.arg('fps', TYPE_INT)\
 		.info('sets the maxinum fps the engine should run at 0 means no limit as long as vsync is disable')
 	Console.register('vsync',
 		func(state: bool):
 			DisplayServer.window_set_vsync_mode(
 				DisplayServer.VSYNC_ENABLED if state else DisplayServer.VSYNC_DISABLED
 			)
-	).arg('enable', TYPE_BOOL, null, 'true to enable vsync, false to disable')\
+	).arg('enable', TYPE_BOOL)\
 	.info('sets the vsync state of the current window - enabling will target the fps of current the display')
 	
 	Console.register('physics',
@@ -136,14 +136,3 @@ func register() -> void:
 			Console.get_tree().debug_paths_hint = not Console.get_tree().debug_paths_hint
 			Console.println('on' if Console.get_tree().debug_paths_hint else 'off')
 	).info('toggles showing paths')
-
-var rng := RandomNumberGenerator.new()
-
-func color(x: Variant) -> String:
-	const colors := [
-	'ff7085','abc8ff','57b3ff',
-	'ff7085','bce0ff','42ffc2',
-	'42ffc2','8effda','ffeca1',
-	'63c259',]
-	rng.seed = hash(x)
-	return colors[rng.randi()%colors.size()]
