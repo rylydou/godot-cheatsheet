@@ -1,7 +1,7 @@
 # Cheatsheet
 A debug console for your Godot game.
 
-![console](addons/cheatsheet/images/console.png)
+![console](ignore/console.png)
 
 ## Features
 - [x] Debug console with text based input.

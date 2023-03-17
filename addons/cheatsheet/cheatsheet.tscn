@@ -1,7 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://bs5jau2tcaupl"]
+[gd_scene load_steps=15 format=3 uid="uid://genbtx4li8h5"]
 
 [ext_resource type="Script" path="res://addons/cheatsheet/scripts/cheatsheet.gd" id="1_xc2al"]
-[ext_resource type="Theme" uid="uid://cx73s5p668lkb" path="res://addons/cheatsheet/theme.tres" id="2_2jga7"]
+[ext_resource type="Theme" uid="uid://cx73s5p668lkb" path="res://addons/cheatsheet/resources/theme.tres" id="2_luvyh"]
 [ext_resource type="Script" path="res://addons/cheatsheet/scripts/stats_display.gd" id="3_rjkwo"]
 [ext_resource type="Material" uid="uid://djy8vjdw5lvhj" path="res://addons/cheatsheet/shaders/background.tres" id="4_8o8u8"]
 [ext_resource type="Script" path="res://addons/cheatsheet/scripts/pallette.gd" id="5_4dg0m"]
@@ -54,7 +54,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource("2_2jga7")
+theme = ExtResource("2_luvyh")
 
 [node name="StatsDisplay" type="MarginContainer" parent="GUI"]
 unique_name_in_owner = true

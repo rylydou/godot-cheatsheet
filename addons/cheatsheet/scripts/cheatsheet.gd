@@ -1,4 +1,4 @@
-@icon('res://addons/cheatsheet/icon_mono.svg')
+@icon('res://addons/cheatsheet/icons/console.svg')
 extends CanvasLayer
 
 const Command := preload('res://addons/cheatsheet/scripts/command.gd')
