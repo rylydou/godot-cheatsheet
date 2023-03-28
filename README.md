@@ -34,5 +34,8 @@ $ echo '...Or if you\'re wanting to have spaces.'
 ```
 > Sorry for the strange sentence. I wanted to demonstrate how to escape `'`s.
 
+### ...change the key to toggle the console
+Open the `cheatsheet.tscn` in `res://addons/cheatsheet/` and edit the `toggle_shortcut` property to whatever you want.
+
 ## Links
 [Godot Asset Library Listing](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6Ei3mVwUpVlEpS9ImQ8TfhzvWrtwLVeaL-g&usqp=CAU) | [Github Repo](https://github.com/CiberTurtle/godot-cheatsheet) | [Issue Tracker](https://github.com/CiberTurtle/godot-cheatsheet/issues)
