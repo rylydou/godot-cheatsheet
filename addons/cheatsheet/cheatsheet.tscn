@@ -54,6 +54,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 theme = ExtResource("2_luvyh")
 
 [node name="StatsDisplay" type="MarginContainer" parent="GUI"]
@@ -116,6 +117,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="Menu" type="PanelContainer" parent="GUI/VSplit"]
 unique_name_in_owner = true
@@ -179,6 +181,7 @@ text = " List "
 [node name="Empty" type="Control" parent="GUI/VSplit"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="Center" type="CenterContainer" parent="GUI"]
 visible = false
