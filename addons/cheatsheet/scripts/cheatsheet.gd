@@ -20,6 +20,8 @@ var history: Array[String] = []
 var history_index := -1
 var db := CommandDB.new()
 
+var _nodes_to_pause = {}
+
 func _ready() -> void:
 	menu.hide()
 	menu.position.y = -menu.size.y
@@ -60,6 +62,12 @@ func open() -> void:
 	console_key_prompt.hide()
 	menu.show()
 	command_input.grab_focus()
+	for k in _nodes_to_pause.keys():
+		if not k:
+			_nodes_to_pause.erase(k)
+			continue
+		if _nodes_to_pause[k].on_open:
+			_nodes_to_pause[k].on_open.call()
 	
 	if slide_tween:
 		slide_tween.kill()
@@ -73,6 +81,12 @@ func close() -> void:
 	is_cheatsheet_open = false
 	
 	command_input.release_focus()
+	for k in _nodes_to_pause.keys():
+		if not k:
+			_nodes_to_pause.erase(k)
+			continue
+		if _nodes_to_pause[k].on_close:
+			_nodes_to_pause[k].on_close.call()
 	
 	if slide_tween:
 		slide_tween.kill()
@@ -81,6 +95,22 @@ func close() -> void:
 	slide_tween.set_trans(Tween.TRANS_QUART)
 	slide_tween.tween_property(menu, 'position:y', -menu.size.y, .4).from_current()
 	slide_tween.tween_callback(menu.hide)
+
+# Register a node to block when the Console is active
+# @param node: Node The node to block
+# @param pause_callback: Callable Called when the console opens
+# @param unpause_callback: Callable Called when the console closes
+# @param force: bool Should the callables be replaced if the node is already unregistered
+func register_node(node: Node, pause_callback: Callable, unpause_callback: Callable):
+	if _nodes_to_pause.has(node): return
+	_nodes_to_pause[node] = {
+		"on_open": pause_callback,
+		"on_close": unpause_callback
+	}
+	
+func unregister_node(node: Node):
+	if not _nodes_to_pause.has(node): return
+	_nodes_to_pause.erase(node)
 
 func register(name: String, callback: Callable) -> Command:
 	var command := db.register(name, callback)
