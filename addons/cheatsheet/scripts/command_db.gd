@@ -121,13 +121,13 @@ func get_args(str: String) -> PackedStringArray:
 				is_str = true
 				continue
 		
-		# normal argument
-		word.append(ch)
-		
 		if ch == ' ':
 			is_start = true
 			submit.call()
 			continue
+
+		# normal argument
+		word.append(ch)
 	
 	submit.call()
 	
